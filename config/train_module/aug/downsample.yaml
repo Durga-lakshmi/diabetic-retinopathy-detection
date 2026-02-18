@@ -1,0 +1,4 @@
+enable: true
+method: downsample
+target_ratio_down: 1.0 # compare to the minority class
+seed: 42

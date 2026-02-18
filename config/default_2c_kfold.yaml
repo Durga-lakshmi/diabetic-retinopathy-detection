@@ -1,0 +1,74 @@
+defaults:
+  - dataset: idrid # idrid # idrid # # # eyepacs # # #remember space
+  - model: convnext #convnext # convnext  # convnext  # efficientnet # convnext # convnext # dense121 #basic_cnn #efficientB2 #
+  - train_module/aug: upsample_all
+  - train_module/aug_other: none
+  - train_module/loss: binary_focal
+  - train_module/metrics: binary
+  - _self_
+
+name: default_2c_kfold
+
+wandb:
+  init:
+    enable: true
+    #entity: "zizi-Deep-Learning-Labor"
+    project: NEW_DR_2class_kfold
+    name: "${save.date_prefix}_${model.name}"
+    group: DR_${model.name}_${problem.name}_kfold
+    tags: 
+      - DR
+      - ${problem.name}
+      - ${model.name}
+      - kfold
+    id: null
+
+
+problem:
+  name: binary
+  num_classes: 1
+
+kfold:
+  n_splits: 5
+  seed: 42
+
+# Training
+runner:
+  _target_: runners.run_train_2c_kfold
+epochs: 1
+lr: 0.001
+# Logging
+log_interval: 10 # 100-EyePACS 2-IDRID
+eval_interval: 1
+patience: 20 # Early Stopping
+
+train:
+  metric: accuracy
+  #use_tv: true # only for convnext
+  #lambda_tv: 1e-4
+  
+# Saving
+save:
+  base_dir: "./checkpoints"
+  model_name: ${model.name}
+  path: "${save.base_dir}/${save.model_name}/${now:%Y%m%d_%H%M}_best.pth"
+
+  #save_dir: "${save.base_dir}/${save.model_name}/" 
+
+
+save_path: "${save.base_dir}/${save.model_name}/${now:%Y%m%d_%H%M}_best.pth"
+#./checkpoints/dense/12_10_2c_idrid_best_model_m1_u2_epoch10.pth
+
+
+# Testing
+# single model path for evaluation
+
+test:
+  name: test_2c
+  check_mode: false
+check_path: null 
+# ./checkpoints/ensemble/12_11_best_model_m1_u2_epoch20.pth
+
+
+
+

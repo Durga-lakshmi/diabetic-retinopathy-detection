@@ -1,0 +1,7 @@
+name: convnext
+model_size: tiny      # tiny/small/base/large
+#num_classes: 1 #4         # for deep visualisatioin; BCEWithLogitsLoss & Focal loss, sigmoid -> 1 ; CrossEntropyLoss-> num of classes 
+num_classes: ${problem.num_classes}        # for 5-classes classification
+pretrained: true
+drop_path_rate: 0.1
+

@@ -1,0 +1,7 @@
+name: Dense121
+growth_rate: 32       # each layer grows path
+block_config: [6, 12, 24, 16]  # DenseBlock 
+num_init_features: 64  
+bn_size: 4             # bottleneck 
+drop_rate: 0.2
+num_classes: ${problem.num_classes}      # BCEWithLogitsLoss, sigmoid -> 1 ; CrossEntropyLoss-> num of classes 

@@ -1,0 +1,2 @@
+_target_: module_training.metrics.FiveClassMetrics
+include_confusion_matrix: true

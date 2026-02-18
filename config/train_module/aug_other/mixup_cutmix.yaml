@@ -1,0 +1,5 @@
+_target_: module_training.augmentations.MixupCutMix
+p_mixup: 0.5
+p_cutmix: 0.5
+alpha: 1.0
+num_classes: ${problem.num_classes} ## need to be changed

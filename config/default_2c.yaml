@@ -1,0 +1,112 @@
+defaults:
+  - dataset: idrid # idrid # idrid # # # eyepacs # # #remember space
+  - model: efficientnet # dense121 # efficientnet #convnext 
+  - train_module/aug: upsample_all
+  - train_module/aug_other: none
+  - train_module/loss: binary_focal
+  - train_module/metrics: binary
+  - _self_
+
+name: default_2c
+
+wandb:
+  init:
+    enable: true
+    #entity: "zizi-Deep-Learning-Labor"
+    project: NEW_DR_2class
+    name: "${save.date_prefix}_${model.name}"
+    group: DR_${model.name}_${problem.name}
+    tags: 
+      - DR
+      - ${problem.name}
+      - ${model.name}
+    id: null
+
+problem:
+  name: binary
+  num_classes: 1
+
+# Training
+runner:
+  _target_: runners.run_train_2c
+
+epochs: 1 #10 # 10/20
+lr: 0.001
+# Logging
+log_interval: 10 # 100-EyePACS 2-IDRID
+eval_interval: 1
+patience: 5  # Early Stopping
+
+
+train:
+  metric: accuracy
+  #use_tv: true # only for convnext
+  #lambda_tv: 1e-4
+
+#train_module:
+#  aug: upsample_all
+#  aug_other: none
+#  loss: binary_focal
+#  metrics: binary
+
+
+
+# Saving
+save:
+  base_dir: "./checkpoints"
+  model_name: ${model.name}
+  date_prefix: ${now:%Y%m%d_%H%M}
+  save_dir: "${save.base_dir}/${save.model_name}"
+  file_name: "${save.date_prefix}_2c_best_model_epoch${epochs}.pth" #important changed point
+  path: "${save.save_dir}/${save.file_name}"
+
+#save_path: ./checkpoints/ensemble/12_15_RUN2_attention_best_model_m1_u2_epoch20.pth
+# ./checkpoints/dense/12_10_2c_idrid_best_model_m1_u2_epoch10.pth
+
+
+
+# Testing
+# single model path for evaluation
+test:
+  name: test_2c
+  check_mode: false #true
+  check_path: ./checkpoints/efficient/12_05_best_model_dr0.2_mix_m1_o1_bs34_te0.4_warm_fl_stepCos_bcepwno_epoch10.pth
+  
+#./checkpoints/Dense121/20251230_0058_2c_best_model_epoch10.pth
+  
+#./checkpoints/efficientnet/20251231_0210_2c_best_model_epoch20.pth
+  
+#Dense: ./checkpoints/Dense121/20260206_1719_2c_best_model_epoch20.pth  #20251230_0058_2c_best_model_epoch10.pth
+  
+#./checkpoints/convnext/12_04_best_model_dp0.1_m1_o1_bs34_te0.4_warm_fl_stepCos_bcepwno_epoch10.pth  # ./checkpoints/Dense121/20260206_1719_2c_best_model_epoch20.pth # ./checkpoints/efficientnet/20251231_0210_2c_best_model_epoch20.pth  #./checkpoints/dense/12_09_2c_idrid_best_model_m1_u1_epoch10.pth
+  
+#./checkpoints/efficientnet/20251231_0210_2c_best_model_epoch20.pth  # null 
+# ./checkpoints/ResNetTransfer/20260101_1734_2c_best_model_epoch10.pth
+
+# ./checkpoints/convnext/20251230_0015_2c_best_model_epoch20.pth
+
+
+# ./checkpoints/DRNet/best_model.pth 
+# 
+# ./checkpoints/efficientnet/20251231_0210_2c_best_model_epoch20.pth
+
+#- { cfg: "dense121.yaml",  ckpt: "checkpoints/dense/12_09_2c_idrid_best_model_m1_u1_epoch10.pth" }
+#- { cfg: "convnext.yaml", ckpt: "checkpoints/convnext/20251230_0015_2c_best_model_epoch20.pth" }
+#- { cfg: "efficientnet.yaml",  ckpt: "checkpoints/efficientnet/20251231_0210_2c_best_model_epoch20.pth" }
+
+
+
+
+
+#check path for continue training
+#check_path:
+
+
+# Deep Visualization  # same check_path
+deep_viz:
+  enable: true
+  num_samples: 5
+  save_viz_dir: './notebooks/DV/idrid/${model.name}'
+
+
+

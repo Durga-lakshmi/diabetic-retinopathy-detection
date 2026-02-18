@@ -1,0 +1,17 @@
+name: IDRID
+path: /home/data/IDRID_dataset/
+images:
+  train: images/train
+  test: images/test
+labels:
+  train: labels/train.csv
+  test: labels/test.csv
+
+mean: [-0.2259, -1.0937, -1.4864]
+std: [1.2921, 0.6861, 0.2452]
+
+batch_size: 32
+
+
+
+

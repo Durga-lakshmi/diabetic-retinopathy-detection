@@ -1,0 +1,3 @@
+name: ResNet18Multiclass
+num_classes: 5
+pretrained: true

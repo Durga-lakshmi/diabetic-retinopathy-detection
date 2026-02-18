@@ -1,0 +1,86 @@
+defaults:
+  - dataset: idrid # idrid # idrid # # # eyepacs # # #remember space
+  - train_module/aug: upsample_all
+  - train_module/aug_other: none
+  - train_module/loss: binary_focal
+  - train_module/metrics: binary
+  - _self_
+
+name: default_2c_feature_ensemble
+
+wandb:
+  init:
+    enable: true
+    #entity: "zizi-Deep-Learning-Labor"
+    project: NEW_DR_2class_ensemble
+    name: "${save.date_prefix}_feature_ensemble"
+    group: DR_feature_ensemble
+    tags: 
+      - DR
+      - ${problem.name}
+      - feature_ensemble
+    id: null
+
+problem:
+  name: binary
+  num_classes: 1
+
+# Training
+runner:
+  _target_: runners.run_train_feature_ensemble
+
+epochs: 1 #10
+lr: 0.001
+# Logging
+log_interval: 10 # 100-EyePACS 2-IDRID
+eval_interval: 1
+patience: 10 # Early Stopping
+
+
+train:
+  metric: accuracy
+  #use_tv: true # only for convnext
+  #lambda_tv: 1e-4
+
+# Saving
+save:
+  base_dir: "./checkpoints"
+  model_name: ensemble
+  date_prefix: ${now:%Y%m%d_%H%M}
+  save_dir: "${save.base_dir}/${save.model_name}"
+  file_name: "${save.date_prefix}_2c_best_model_epoch${epochs}.pth" #important changed point
+  path: "${save.save_dir}/${save.file_name}"
+
+save_path: ./checkpoints/ensemble/12_15_RUN2_attention_best_model_m1_u2_epoch20.pth
+#./checkpoints/dense/12_10_2c_idrid_best_model_m1_u2_epoch10.pth
+
+
+# Testing
+# single model path for evaluation
+
+test: 
+  name: test_ensemble
+  check_mode: false #true #false  #true
+  check_path: ./checkpoints/ensemble/20260207_2052_2c_best_model_epoch10.pth # ./checkpoints/ensemble/20260106_0202_2c_best_model_epoch1.pth
+
+deep_viz:
+  enable: true
+  num_samples: 5
+  save_viz_dir: './notebooks/DV/idrid/${save.model_name}'
+
+# ./checkpoints/ensemble/20260101_1437_2c_best_model_epoch10.pth
+
+
+
+# for 2 classes ensemble
+ensemble_models: 
+  - { cfg: "dense121.yaml",  ckpt: "checkpoints/Dense121/20251230_0058_2c_best_model_epoch10.pth" }
+  - { cfg: "convnext.yaml", ckpt: "checkpoints/convnext/20251230_0015_2c_best_model_epoch20.pth" }
+  - { cfg: "efficientnet.yaml",  ckpt: "checkpoints/efficientnet/20251231_0210_2c_best_model_epoch20.pth" }
+
+#  - { cfg: "dense121.yaml",  ckpt: "checkpoints/dense/12_09_2c_idrid_best_model_m1_u1_epoch10.pth" }
+#  - { cfg: "convnext.yaml", ckpt: "checkpoints/convnext/fold1/2_best_model_k5_m1_d3_u2_bs34_te0.4_warm_fl_stepCos_bcepwno_epoch10_11_30_fold1.pth" }
+#  - { cfg: "efficientnet.yaml",  ckpt: "checkpoints/efficient/12_05_best_model_dr0.2_mix_m1_o1_bs34_te0.4_warm_fl_stepCos_bcepwno_epoch10.pth" }
+
+
+

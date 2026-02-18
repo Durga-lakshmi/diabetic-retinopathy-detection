@@ -1,0 +1,14 @@
+# TODO
+name: EYEPACS
+path: /home/data/EyePACS/graham/    #raw/ #/home/data/EyePACS/ # also can use rohdata path
+images:
+  train: train
+  val: val
+  test: test
+
+labels:
+  train: train.csv
+  val: val.csv
+  test: test.csv
+
+batch_size: 128

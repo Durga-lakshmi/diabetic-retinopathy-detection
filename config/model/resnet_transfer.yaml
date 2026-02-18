@@ -1,0 +1,3 @@
+name: ResNet18Binary
+num_classes: ${problem.num_classes}
+pretrained: true

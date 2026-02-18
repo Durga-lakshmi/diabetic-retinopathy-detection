@@ -1,0 +1,3 @@
+enable: true
+method: upsample_all
+target_ratio_up: 1.0 # compare to the majority class

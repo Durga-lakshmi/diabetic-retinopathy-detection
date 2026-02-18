@@ -1,0 +1,12 @@
+_target_: module_training.losses.FocalCELoss
+#[0.5, 1, 1, 2, 2.5]
+#alpha: [1, 5, 1, 2.5, 5]
+gamma: 1.5
+reduction: mean
+
+alpha_0: 1.0   
+alpha_1: 8  
+alpha_2: 1  
+alpha_3: 2   
+alpha_4: 5   
+#weight: null

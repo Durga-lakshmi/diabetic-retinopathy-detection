@@ -1,0 +1,21 @@
+name: default
+defaults:
+  - dataset: idrid  # Options: idrid, eyepacs
+  - model: small_drnet #Options : resnet_multiclass, small_drnet
+  - _self_
+
+task : 2c
+
+# Training
+epochs: 1
+lr: 0.0002
+
+# Logging
+log_interval: 5
+eval_interval: 1
+
+# Early Stopping
+patience: 8
+
+weight_decay: 1e-3
+dropout_rate: 0.4

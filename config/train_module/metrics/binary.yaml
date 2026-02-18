@@ -1,0 +1,4 @@
+_target_: module_training.metrics.BinaryMetrics
+threshold: 0.4
+zero_division: 0
+do_threshold_sweep: false

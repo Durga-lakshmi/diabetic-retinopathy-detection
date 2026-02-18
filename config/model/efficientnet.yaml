@@ -1,0 +1,6 @@
+name: efficientnet
+model_size: b0          # b0/b1/b2/b3/b4/b5/b6/b7 或 efficientnetv2-s/m/l
+#num_classes: 1          # for deep visualisatioin; BCEWithLogitsLoss & FocalLoss → 1；CrossEntropyLoss → class number
+num_classes: ${problem.num_classes}          
+pretrained: true        # 
+drop_rate: 0.2         # Dropout 

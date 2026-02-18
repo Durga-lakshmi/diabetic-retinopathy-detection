@@ -1,0 +1,63 @@
+defaults:
+  - dataset: idrid # idrid # idrid # # # eyepacs # # #remember space
+  - train_module/aug: upsample_fixed
+  - train_module/aug_other: none
+  - train_module/loss: five_focal_ce
+  - train_module/metrics: five
+  - _self_
+
+
+name: default_5c_output_ensemble 
+
+
+wandb:
+  init:
+    enable: true
+    #entity: "zizi-Deep-Learning-Labor"
+    project: NEW_DR_5class_ensemble
+    name: "${save.date_prefix}_output"
+    group: DR_${problem.name}_output
+    tags: 
+      - DR
+      - ${problem.name}
+      - output_ensemble
+    id: null
+
+problem:
+  name: fiveclass
+  num_classes: 5
+
+# Training
+epochs: 1  # 20
+lr: 0.001
+# Logging
+log_interval: 10 # 100-EyePACS 2-IDRID
+eval_interval: 1
+patience: 20 # Early Stopping
+
+
+train:
+  metric: f1
+  #lambda_d:  #
+  #use_ord: true
+  #lambda_ord: 0.5
+
+save_path: ./checkpoints/ensemble/12_15_RUN2_attention_best_model_m1_u2_epoch20.pth
+#./checkpoints/dense/12_10_2c_idrid_best_model_m1_u2_epoch10.pth
+
+
+# Testing
+# single model path for evaluation
+#check_path: ./checkpoints/ensemble/12_11_best_model_m1_u2_epoch20.pth
+test: 
+  name: test_ensemble
+
+
+
+# for 5 classes ensemble 
+ensemble_models: 
+  - { cfg: "dense121.yaml",  ckpt: "checkpoints/dense/12_09_5c_idrid_best_model_m1_u1_epoch20.pth" }
+  - { cfg: "convnext.yaml", ckpt: "checkpoints/convnext/12_06_5c_aug_best_model_m1_o1_bs34_te0.4_warm_fl_stepCos_bcepwno_epoch10.pth" }
+  - { cfg: "efficientnet.yaml",  ckpt: "checkpoints/efficient/12_08_5c_best_model_m1_u2_epoch20.pth" }
+
+

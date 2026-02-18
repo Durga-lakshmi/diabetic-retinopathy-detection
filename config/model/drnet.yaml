@@ -1,0 +1,2 @@
+name: DRNet
+num_classes: ${problem.num_classes}
